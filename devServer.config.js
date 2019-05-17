@@ -35,7 +35,7 @@ module.exports = {
     // 代理服务器的请求
     context: ['/api'],
     // 服务器的目标地址
-    target: "http://www.your-server.com",
+    target: "http://app.example.com",
     changeOrigin: true,
     // 监听代理请求
     onProxyReq(proxyReq, req, res) {
@@ -53,7 +53,7 @@ module.exports = {
     // 代理登录相关的所有请求
     context: ['/login'],
     // 登录的目标地址
-    target: "http://www.sso.com",
+    target: "http://sso.example.com",
     changeOrigin: true,
     onProxyRes(proxyRes, req, res) {
       // 如果响应头中含有set-cookie字段，则将其cookie存入内存中
