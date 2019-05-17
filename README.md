@@ -10,7 +10,7 @@ SSO（ Single Sign-On ），即单点登录，是一种控制多个相关但彼�
 
 ### 2.1 devServer.porxy的流程
 
-首先我们需要了解，在开发环境下，所有浏览器发起的非跨域的请求（http://localhost:xxxx/），都是由node服务器，即`devServer`来处理。其中`devServer.proxy`是通过`http-proxy-middleware`将由浏览器发起的请求转发到目标服务器下，然后目标服务器将响应返回给node服务器，node服务器再将该响应返回给浏览器。简单表示如下：
+首先我们需要了解，在开发环境下，所有浏览器发起的非跨域的请求（`http://localhost:xxxx/`），都是由node服务器，即`devServer`来处理。其中`devServer.proxy`是通过`http-proxy-middleware`将由浏览器发起的请求转发到目标服务器下，然后目标服务器将响应返回给node服务器，node服务器再将该响应返回给浏览器。简单表示如下：
 
 浏览器⇄node服务器⇄目标服务器
 
