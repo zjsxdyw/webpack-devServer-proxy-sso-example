@@ -26,7 +26,7 @@ const getCookie = (userAgent) => {
 }
 
 module.exports = {
-  // index值为空时，可以让devServer代理首页(localhost:xxxx)，配合 context: ['/'] 使用
+  // index值为空时，可以让devServer拦截首页(localhost:xxxx)，配合 context: ['/'] 使用
   index: '',
   // 自动打开页面
   open: true,
@@ -35,15 +35,21 @@ module.exports = {
     // 代理服务器的请求
     context: ['/api'],
     // 服务器的目标地址
-    target: "http://app.example.com",
+    target: "http://api.example.com",
     changeOrigin: true,
     // 监听代理请求
     onProxyReq(proxyReq, req, res) {
+      // proxyReq是node服务器发给api服务器的response
+      // req是浏览器发给node服务器的request
+      // res是node服务器返回给浏览器的response
       // 将cookie插入到请求头
       proxyReq.setHeader('Cookie', getCookie(req.get('User-Agent')));
     },
     // 监听代理返回
     onProxyRes(proxyRes, req, res) {
+      // proxyRes是登录服务器返回给node服务器的response
+      // req是浏览器发给node服务器的request
+      // res是node服务器返回给浏览器的response
       // 如果响应头中含有set-cookie字段，则将其cookie存入内存中
       if(proxyRes.headers['set-cookie']) {
         setCookie(req.get('User-Agent'), proxyRes.headers['set-cookie']);
@@ -55,7 +61,11 @@ module.exports = {
     // 登录的目标地址
     target: "http://sso.example.com",
     changeOrigin: true,
+    // 监听代理返回
     onProxyRes(proxyRes, req, res) {
+      // proxyRes是登录服务器返回给node服务器的response
+      // req是浏览器发给node服务器的request
+      // res是node服务器返回给浏览器的response
       // 如果响应头中含有set-cookie字段，则将其cookie存入内存中
       if(proxyRes.headers['set-cookie']) {
         setCookie(req.get('User-Agent'), proxyRes.headers['set-cookie']);
@@ -66,7 +76,7 @@ module.exports = {
       }
     }
   }, {
-    // 代理首页(localhost:xxxx)
+    // 拦截首页(localhost:xxxx)
     context: ['/'],
     bypass: function(req, res, proxyOptions) {
       // 如果请求为首页且发起该请求的浏览器没有登录，则跳转到登录页
