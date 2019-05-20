@@ -164,7 +164,7 @@ const loginUrl = '/login';
         return true;
       }
     }
-  }】
+  }]
 }
 ```
 
